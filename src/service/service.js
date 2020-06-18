@@ -5,7 +5,6 @@ const {version} = require(`../../package.json`);
 const constants = require(`./constants`);
 const {getRandomNumber, threeMonthsFromNowInMS} = require(`./utils`);
 
-// const argv = process.argv;
 const [commandName = ``, commandValue = null] = process.argv.slice(2);
 
 const runCommand = (name, value) => {
@@ -63,4 +62,6 @@ const generateMockedObject = () => {
   };
 };
 
-runCommand(commandName, commandValue);
+if (!module.parent) {
+  runCommand(commandName, commandValue);
+}
