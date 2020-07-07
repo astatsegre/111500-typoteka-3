@@ -1,6 +1,6 @@
 'use strict';
 
-const {generateOffer, showVersion, showHelp} = require(`./cli`);
+const {generateOffer, showVersion, showHelp, runServer} = require(`./cli`);
 
 const [commandName = ``, commandValue = null] = process.argv.slice(2);
 
@@ -11,6 +11,9 @@ const runCommand = async (name, value) => {
       break;
     case `--version`:
       showVersion();
+      break;
+    case `--server`:
+      runServer(value);
       break;
     default:
       showHelp();
