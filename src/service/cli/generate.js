@@ -1,15 +1,17 @@
 'use strict';
 
-const {writeFile} = require(`fs`).promises;
+const {writeFile, readFile} = require(`fs`).promises;
+const os = require(`os`);
 const path = require(`path`);
 
 const chalk = require(`chalk`);
 
 const {getRandomNumber, threeMonthsFromNowInMS} = require(`../utils`);
-const constants = require(`../constants`);
 
+const SENTENCES_IN_ANNOUNCE_MAX = 5;
 const DEFAULT_OBJECTS_NUMBER = 1;
 const MAX_COUNT = 1000;
+const TEXTS_FOLDER = `../../data`;
 
 const generateOffer = async (value) => {
   const objectsInArrayNumber = Number.parseInt(value, 10) || DEFAULT_OBJECTS_NUMBER;
@@ -31,20 +33,28 @@ const generateOffer = async (value) => {
   process.exit(0);
 };
 
-const generateMockedObject = () => {
+const generateMockedObject = async () => {
+  const titleList = await getArrayFromFile(`titles.txt`);
+  const textList = await getArrayFromFile(`sentences.txt`);
   return {
-    title: constants.titleList[getRandomNumber(0, constants.titleList.length)],
+    title: titleList[getRandomNumber(0, titleList.length)],
     createdDate: new Date(getRandomNumber(threeMonthsFromNowInMS, +new Date())),
-    announce: randomSliceArray(`textList`, constants.SENTENCES_IN_ANNOUNCE_MAX),
-    fullText: randomSliceArray(`textList`, constants.textList.length),
-    category: randomSliceArray(`categoryList`)
+    announce: await randomSliceArray(`sentences.txt`, SENTENCES_IN_ANNOUNCE_MAX),
+    fullText: await randomSliceArray(`sentences.txt`, textList.length),
+    category: await randomSliceArray(`categories.txt`)
   };
 };
 
-const randomSliceArray = (arrayName, maxLength) => {
-  const start = getRandomNumber(0, constants[arrayName].length - 1);
-  const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : constants[arrayName].length);
-  return constants[arrayName].slice(start, end);
+const randomSliceArray = async (fileName, maxLength) => {
+  const list = await getArrayFromFile(fileName);
+  const start = getRandomNumber(0, list.length - 1);
+  const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : list.length);
+  return list.slice(start, end);
+};
+
+const getArrayFromFile = async (fileName) => {
+  const list = await readFile(path.resolve(`${TEXTS_FOLDER}/`, fileName), `utf8`);
+  return list.split(os.EOL).filter((i) => i);
 };
 
 module.exports = generateOffer;
