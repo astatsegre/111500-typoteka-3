@@ -1,6 +1,6 @@
 'use strict';
 
-const constants = require(`./constants`);
+const MONTH_IN_MS = 2629743000;
 
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
@@ -8,6 +8,6 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-const threeMonthsFromNowInMS = +new Date() - constants.MONTH_IN_MS * 3;
+const threeMonthsFromNowInMS = +new Date() - MONTH_IN_MS * 3;
 
 module.exports = {getRandomNumber, threeMonthsFromNowInMS};
