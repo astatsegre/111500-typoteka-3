@@ -8,7 +8,8 @@
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/",
     "eslint-fix": "eslint --ext .js src/ --fix",
-    "start": "node ./src/service/service.js"
+    "start": "node ./src/service/service.js",
+    "start-front-server": "node ./src/express/index.js"
   },
   "author": "Новицкас Станислав",
   "license": "ISC",
@@ -16,5 +17,8 @@
     "eslint": "7.2.0",
     "eslint-config-htmlacademy": "0.5.2",
     "nodemon": "2.0.4"
+  },
+  "dependencies": {
+    "express": "4.17.1"
   }
 }
