@@ -11,7 +11,7 @@ const {getRandomNumber, threeMonthsFromNowInMS} = require(`../utils`);
 const SENTENCES_IN_ANNOUNCE_MAX = 5;
 const DEFAULT_OBJECTS_NUMBER = 1;
 const MAX_COUNT = 1000;
-const TEXTS_FOLDER = `../../data`;
+const TEXTS_FOLDER = `../../../data`;
 
 const generateOffer = async (value) => {
   const objectsInArrayNumber = Number.parseInt(value, 10) || DEFAULT_OBJECTS_NUMBER;
@@ -53,7 +53,7 @@ const randomSliceArray = async (fileName, maxLength) => {
 };
 
 const getArrayFromFile = async (fileName) => {
-  const list = await readFile(path.resolve(`${TEXTS_FOLDER}/`, fileName), `utf8`);
+  const list = await readFile(path.resolve(__dirname, `${TEXTS_FOLDER}/`, fileName), `utf8`);
   return list.split(os.EOL).filter((i) => i);
 };
 
