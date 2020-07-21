@@ -1,10 +1,11 @@
 'use strict';
 
 const {readFile} = require(`fs`).promises;
-const path = require(`path`);
 
 const chalk = require(`chalk`);
 const express = require(`express`);
+
+const {PATH_TO_MOCKS} = require(`../utils`)
 
 const DEFAULT_PORT = 3000;
 const HTTP_NOT_FOUND_CODE = 404;
@@ -16,7 +17,7 @@ app.use(express.json());
 
 app.get(`/posts`, async (req, res) => {
   try {
-    const fileContent = await readFile(path.resolve(__dirname, `../mock.json`), `utf8`);
+    const fileContent = await readFile(PATH_TO_MOCKS, `utf8`);
     if (!fileContent) {
       return res.send([]);
     }
