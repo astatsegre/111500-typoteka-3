@@ -1,6 +1,9 @@
 'use strict';
 
+const path = require(`path`);
+
 const MONTH_IN_MS = 2629743000;
+const PATH_TO_MOCKS = path.resolve(__dirname, `../../mock.json`)
 
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
@@ -10,4 +13,4 @@ const getRandomNumber = (min, max) => {
 
 const threeMonthsFromNowInMS = +new Date() - MONTH_IN_MS * 3;
 
-module.exports = {getRandomNumber, threeMonthsFromNowInMS};
+module.exports = {getRandomNumber, threeMonthsFromNowInMS, PATH_TO_MOCKS};
