@@ -5,6 +5,7 @@ const {Router} = require(`express`);
 const {HTTP_CODE} = require(`../constants`);
 const articleExists = require(`../middlewares/article-exists`);
 const articleValidator = require(`../middlewares/article-validator`);
+const commentValidator = require(`../middlewares/comment-validator`);
 
 module.exports = (articleService, commentService) => {
   const articleRouter = new Router();
@@ -30,24 +31,24 @@ module.exports = (articleService, commentService) => {
     articleService.delete(articleId);
     res.status(HTTP_CODE.OK).json(res.locals.offer);
   });
-  //
-  // // comments
-  // articleRouter.get(`/:offerId/comments`, offerExists(articleService), async (req, res) => {
-  //   const {offer} = res.locals;
-  //   const comments = commentService.getAll(offer);
-  //   res.status(HTTP_CODE.OK).json(comments);
-  // });
-  // articleRouter.delete(`/:offerId/comments/:commentId`, offerExists(articleService), async (req, res) => {
-  //   const {offer} = res.locals;
-  //   const {commentId} = req.params;
-  //   const deletedComment = commentService.delete(offer, commentId);
-  //   res.status(HTTP_CODE.OK).json(deletedComment);
-  // });
-  // articleRouter.post(`/:offerId/comments`, [offerExists(articleService), commentValidator], async (req, res) => {
-  //   const {offer} = res.locals;
-  //   const createdComment = commentService.create(offer, req.body);
-  //   res.status(HTTP_CODE.CREATED).json(createdComment);
-  // });
+
+  // comments
+  articleRouter.get(`/:articleId/comments`, articleExists(articleService), async (req, res) => {
+    const {article} = res.locals;
+    const comments = commentService.getAll(article);
+    res.status(HTTP_CODE.OK).json(comments);
+  });
+  articleRouter.delete(`/:articleId/comments/:commentId`, articleExists(articleService), async (req, res) => {
+    const {article} = res.locals;
+    const {commentId} = req.params;
+    const deletedComment = commentService.delete(article, commentId);
+    res.status(HTTP_CODE.OK).json(deletedComment);
+  });
+  articleRouter.post(`/:articleId/comments`, [articleExists(articleService), commentValidator], async (req, res) => {
+    const {article} = res.locals;
+    const createdComment = commentService.create(article, req.body);
+    res.status(HTTP_CODE.CREATED).json(createdComment);
+  });
 
   return articleRouter;
 };
