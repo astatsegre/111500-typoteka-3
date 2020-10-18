@@ -5,6 +5,7 @@ const os = require(`os`);
 const path = require(`path`);
 
 const chalk = require(`chalk`);
+const {nanoid} = require(`nanoid`);
 
 const {getRandomNumber, threeMonthsFromNowInMS, PATH_TO_MOCKS} = require(`../utils`);
 
@@ -37,11 +38,13 @@ const generateMockedObject = async () => {
   const titleList = await getArrayFromFile(`titles.txt`);
   const textList = await getArrayFromFile(`sentences.txt`);
   return {
+    id: nanoid(),
     title: titleList[getRandomNumber(0, titleList.length)],
     createdDate: new Date(getRandomNumber(threeMonthsFromNowInMS, +new Date())),
     announce: await randomSliceArray(`sentences.txt`, SENTENCES_IN_ANNOUNCE_MAX),
     fullText: await randomSliceArray(`sentences.txt`, textList.length),
-    category: await randomSliceArray(`categories.txt`)
+    category: await randomSliceArray(`categories.txt`),
+    comments: await getComments(getRandomNumber(0, 10))
   };
 };
 
@@ -50,6 +53,18 @@ const randomSliceArray = async (fileName, maxLength) => {
   const start = getRandomNumber(0, list.length - 1);
   const end = getRandomNumber(start + 1, maxLength ? start + 1 + maxLength : list.length);
   return list.slice(start, end);
+};
+
+const getComments = async (commentsNumber = 1) => {
+  const comments = [];
+  for (let i = 0; i < commentsNumber; i++) {
+    const text = await randomSliceArray(`comments.txt`);
+    comments.push({
+      id: nanoid(),
+      text: text.join(` `)
+    });
+  }
+  return comments;
 };
 
 const getArrayFromFile = async (fileName) => {
