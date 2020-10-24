@@ -7,7 +7,7 @@ const os = require(`os`);
 const {TEXTS_FOLDER} = require(`./constants`);
 
 const MONTH_IN_MS = 2629743000;
-const PATH_TO_MOCKS = path.resolve(__dirname, `../../mock.json`)
+const PATH_TO_MOCKS = path.resolve(__dirname, `../../mock.json`);
 
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);

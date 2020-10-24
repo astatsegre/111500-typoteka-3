@@ -1,4 +1,6 @@
-const {nanoid} = require('nanoid')
+'use strict';
+
+const {nanoid} = require(`nanoid`);
 
 class ArticleService {
   constructor(articles) {
@@ -23,4 +25,4 @@ class ArticleService {
   }
 }
 
-module.exports = ArticleService
+module.exports = ArticleService;
