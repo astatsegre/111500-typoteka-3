@@ -13,7 +13,7 @@ const runCommand = async (name, value) => {
       showVersion();
       break;
     case `--server`:
-      runServer(value);
+      await runServer(value);
       break;
     default:
       showHelp();
