@@ -9,8 +9,13 @@ const HTTP_CODE = {
   BAD_REQUEST: 400
 };
 
+const ENV = {
+  DEV: `dev`,
+  PROD: `prod`
+};
+
 const PATH_TO_MOCKS = path.resolve(__dirname, `../../mock.json`);
 const TEXTS_FOLDER = path.resolve(__dirname, `../../data`);
 const CATEGORY_FILE = `categories.txt`;
 
-module.exports = {HTTP_CODE, PATH_TO_MOCKS, TEXTS_FOLDER, CATEGORY_FILE};
+module.exports = {HTTP_CODE, PATH_TO_MOCKS, TEXTS_FOLDER, CATEGORY_FILE, ENV};
