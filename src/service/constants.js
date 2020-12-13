@@ -11,7 +11,8 @@ const HTTP_CODE = {
 
 const ENV = {
   DEV: `dev`,
-  PROD: `prod`
+  PROD: `prod`,
+  JEST: `jest`
 };
 
 const PATH_TO_MOCKS = path.resolve(__dirname, `../../mock.json`);

@@ -12,7 +12,7 @@
     "start-front-server": "node ./src/express/index.js",
     "test::rest": "jest",
     "test": "npm run test::rest",
-    "jest": "./node_modules/.bin/jest"
+    "jest": "cross-env NODE_ENV=jest ./node_modules/.bin/jest"
   },
   "author": "Новицкас Станислав",
   "license": "ISC",
