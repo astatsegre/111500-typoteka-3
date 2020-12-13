@@ -29,7 +29,7 @@ module.exports = (articleService, commentService) => {
   articleRouter.delete(`/:articleId`, articleExists(articleService), async (req, res) => {
     const {articleId} = req.params;
     articleService.delete(articleId);
-    res.status(HTTP_CODE.OK).json(res.locals.offer);
+    res.status(HTTP_CODE.OK).json(res.locals.article);
   });
 
   // comments

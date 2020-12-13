@@ -9,8 +9,11 @@ module.exports = (searchService) => {
 
   searchRouter.get(`/`, async (req, res) => {
     const {query} = req.query;
+    if (!query) {
+      return res.status(HTTP_CODE.BAD_REQUEST).send(`provide "query" query-param`);
+    }
     const result = searchService.find(query);
-    res.status(HTTP_CODE.OK).json(result);
+    return res.status(HTTP_CODE.OK).json(result);
   });
 
   return searchRouter;

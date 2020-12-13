@@ -18,8 +18,9 @@ class CommentService {
   }
 
   create(article, comment) {
-    article.comments.push({id: nanoid(), text: comment});
-    return comment;
+    const newComment = {id: nanoid(), text: comment};
+    article.comments.push(newComment);
+    return newComment;
   }
 }
 
