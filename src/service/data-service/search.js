@@ -6,6 +6,9 @@ class SearchService {
   }
 
   find(query) {
+    if (!query) {
+      return [];
+    }
     return this._articles.filter((article) => article.title.toLowerCase().includes(query.toLowerCase()));
   }
 
