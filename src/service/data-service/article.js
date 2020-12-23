@@ -13,7 +13,9 @@ class ArticleService {
     return this._articles.find((i) => i.id === id);
   }
   create(article) {
-    this._articles.push(Object.assign(article, {id: nanoid()}));
+    const newArticle = Object.assign(article, {id: nanoid()});
+    this._articles.push(newArticle);
+    return newArticle;
   }
   update(id, fieldsToUpdate) {
     let offer = this.getOne(id);
