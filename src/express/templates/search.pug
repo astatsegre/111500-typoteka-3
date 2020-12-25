@@ -10,7 +10,7 @@ block content
       header.header
         include common/logo
           span.logo__name Типотека
-        button.button.button--colored.header__button-new Новая запись
+        include common/new-article-btn
         .header__dropdown
           a.button.button--burger.header__burger(href='#') Открыть меню
           ul.navigation.header__navigation
@@ -80,7 +80,7 @@ block content
                 | ошибкой отправки комментария
             li.navigation__item
               a(href='uikit.html') uikit.html --- UI KIT
-        a.header__search.button.button--search(href='#', aria-label='поиск по сайту')
+        include common/search-btn
       main
         section.search-page
           .search-page__wrapper
@@ -94,5 +94,7 @@ block content
                 .search__result
                   time.search__date(datetime=`${article.createdDate}`) #{article.createdDate.slice(0, 10)}, #{article.createdDate.slice(11, 16)}
                   a.search__link #{article.title}
+            if !results.length
+              p.search-page__empty Ничего не нашлось
 
       include common/footer

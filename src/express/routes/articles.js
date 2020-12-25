@@ -3,13 +3,14 @@
 const {Router} = require(`express`);
 const multer = require(`multer`);
 const {nanoid} = require(`nanoid`);
-
 const path = require(`path`);
-const UPLOAD_DIR = `../../../upload/img/`;
-const articlesRouter = new Router();
+
 const ArticleApi = require(`../services/article-api`);
 const CategoryApi = require(`../services/category-api`);
+
+const UPLOAD_DIR = `../../../upload/img/`;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
+const articlesRouter = new Router();
 
 const storage = multer.diskStorage({
   destination: uploadDirAbsolute,

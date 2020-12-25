@@ -25,9 +25,14 @@ app.get(`/`, async (req, res) => {
   let options = {};
   try {
     const {data} = await ArticleApi.getArticles();
+    let hotArticles = [...data].sort((a, b) => {
+      return b.comments.length - a.comments.length;
+    }).slice(0, 4);
     options.articles = data;
+    options.hotArticles = hotArticles;
   } catch (e) {
     options.articles = [];
+    options.hotArticles = [];
   }
   res.render(`main`, options);
 });
@@ -40,7 +45,7 @@ app.get(`/search`, async (req, res) => {
     const {data} = await MainApi.search(query);
     options = {results: data, query: query || ``};
   } catch (e) {
-    options = {results: []};
+    options = {results: [], query: ``};
   }
   res.render(`search`, options);
 });
