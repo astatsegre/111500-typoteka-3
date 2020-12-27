@@ -2,7 +2,7 @@
 
 const {HTTP_CODE} = require(`../constants`);
 
-const articleKeys = [`category`, `title`, `comments`, `createdDate`, `announce`, `fullText`];
+const articleKeys = [`category`, `title`, `createdDate`, `announce`, `fullText`];
 
 module.exports = (req, res, next) => {
   const userArticleKeys = Object.keys(req.body);

@@ -55,45 +55,46 @@ block content
             li.navigation__item
               a(href='404') 404.html --- Страница для отображения ошибок
             li.navigation__item
-              a(href='500') 500.html --- Страница для отображения ошибок
+              a(href='500.html') 500.html --- Страница для отображения ошибок
             li.navigation__item
-              a(href='search') search.html --- Страница поиска
+              a(href='search.html') search.html --- Страница поиска
             li.navigation__item
-              a(href='search-2') search-2.html --- Страница поиска с результатами
+              a(href='search-2.html') search-2.html --- Страница поиска с результатами
             li.navigation__item
-              a(href='search-3') search-3.html --- Страница поиска пустая
+              a(href='search-3.html') search-3.html --- Страница поиска пустая
             li.navigation__item
-              a(href='post-user') post-user.html --- Страница поcта (для пользователя)
+              a(href='post-user.html') post-user.html --- Страница поcта (для пользователя)
             li.navigation__item
-              a(href='post-visitor-no-tags') post-visitor-no-tags.html --- Страница поcта (для посетителя) без тегов
+              a(href='post-visitor-no-tags.html') post-visitor-no-tags.html --- Страница поcта (для посетителя) без тегов
             li.navigation__item
-              a(href='post-visitor-no-comments')
+              a(href='post-visitor-no-comments.html')
                 | post-visitor-no-comments.html --- Страница поcта (для посетителя) без
                 | комментариев
             li.navigation__item
-              a(href='post-visitor-no-photo')
+              a(href='post-visitor-no-photo.html')
                 | post-visitor-no-photo.html --- Страница поcта (для посетителя) без
                 | фотографии
             li.navigation__item
-              a(href='post-user-2')
+              a(href='post-user-2.html')
                 | post-user-2.html --- Страница поcта (для пользователя) с
                 | ошибкой отправки комментария
             li.navigation__item
-              a(href='uikit') uikit.html --- UI KIT
-        a.header__search.button.button--search(href='#', aria-label='поиск по сайту')
+              a(href='uikit.html') uikit.html --- UI KIT
+        include common/search-btn
       main
         section.modal.modal--flex
           .popup.popup--new-publication.popup--flex
             .new-publication
               form(action='#', method='POST')
                 .new-publication__header
-                  h1 Новая публикация
+                  if article
+                    h1 Новая публикация
                   .new-publication__date-form
                     h3 Дата публикации
                     .new-publication__date-form-division
                       .new-publication__date-block
                         label(for='new-publication-date', aria-label='Календарь')
-                        input#new-publication-date(type='text', name='login', placeholder='21.03.2019')
+                        input#new-publication-date(type='text', name='login', placeholder=`${article.createdDate.slice(0, 10)}`)
                   button.new-publication__button.button.button--colored(type='submit') Опубликовать
                 button.popup__button.button.button--popup-close(type='button', aria-label='Закрыть окно')
                   | Закрыть
@@ -102,7 +103,7 @@ block content
                   .form__wrapper.form__wrapper--intro
                     .form__field
                       label
-                        input(type='text', placeholder='Заголовок', required='')
+                        input(type='text', placeholder='Заголовок', required='', value=`${article.title}`)
                     .form__field.form__field--post-image
                       label
                         input#image-name-field(type='text', placeholder='Фотография', readonly='')
@@ -110,14 +111,23 @@ block content
                         label
                           input.visually-hidden(type='file')
                           | Обзор
-                    a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+
+                    .new-publication__category-wrapper
+                      each category, index in article.category
+                        .new-publication__checkbox.new-publication__checkbox--auto
+                          input(id=`category-${index}` type='checkbox' name=`category-${index}` checked='true')
+                          label(for=`checkbox-${index}`) #{category}
+                      a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+
                   .form__wrapper.form__wrapper--text
                     .form__field.form__field--publication-text
                       label
                         textarea(rows='1', placeholder='Анонс публикации')
+                          | #{article.announce}
                     .form__field.form__field--publication-text
                       label
                         textarea(rows='1', placeholder='Полный текст публикации')
+                          | #{article.fullText}
           .modal__overlay
     script(src='js/vendor.js')
     script(src='js/main.js')
