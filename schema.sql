@@ -1,26 +1,16 @@
 drop table if exists users;
-drop table if exists roles;
 drop table if exists comments;
 drop table if exists articles;
 drop table if exists categories;
 drop table if exists articles_categories;
 
-create table roles(
- id integer not null primary key generated always as identity,
- name varchar(50)
-);
-
 create table users(
  id integer not null primary key generated always as identity,
- role_id integer not null,
  avatar_url varchar(255),
  first_name varchar(255),
  last_name varchar(255),
  email varchar(255),
- password_hash varchar(255),
- foreign key (role_id) references roles (id)
-  on delete set null
-  on update set null
+ password_hash varchar(255)
 );
 
 
