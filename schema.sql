@@ -58,4 +58,9 @@ create table articles_categories(
 );
 
 create index on articles(title);
+create index on comments(user_id);
+create index on comments(article_id);
+create index on articles_categories(article_id);
+create index on articles_categories(category_id);
 create unique index on users(email);
+create unique index on categories(name);
