@@ -6,8 +6,8 @@ SELECT * FROM ARTICLES;
 SELECT
     categories.id,
     categories.name
-FROM articles_categories
-INNER JOIN categories
+FROM categories
+INNER JOIN articles_categories
     ON articles_categories.category_id = categories.id
     GROUP BY categories.id;
 
@@ -16,8 +16,8 @@ SELECT
     categories.id,
     categories.name,
     count(articles_categories.category_id)
-FROM articles_categories
-RIGHT JOIN categories
+FROM categories
+LEFT JOIN articles_categories
     ON articles_categories.category_id = categories.id
     GROUP BY categories.id;
 
@@ -29,20 +29,27 @@ SELECT
     articles.title,
     articles.created_at,
     articles.annotation,
-    concat(users.first_name, ' ', users.last_name) as "first_name_last_name",
+    concat(users.first_name, ' ', users.last_name) as "full_name",
     users.email,
-    count(comments.id) as "comments_count",
-    string_agg(categories.name, ', ') as "categories"
+    article_comments.comments_count,
+    article_categories.categories
 FROM articles
+LEFT JOIN (
+    SELECT article_id, count(comments.id) as "comments_count"
+    FROM comments
+    GROUP BY article_id
+) article_comments
+ON articles.id = article_comments.article_id
+LEFT JOIN (
+    SELECT articles_categories.article_id, string_agg(categories.name, ', ') as "categories"
+    FROM categories
+    INNER JOIN articles_categories
+        ON articles_categories.category_id = categories.id
+    GROUP BY articles_categories.article_id
+) article_categories
+    ON articles.id = article_categories.article_id
 INNER JOIN users
     ON articles.user_id = users.id
-INNER JOIN comments
-    ON articles.id = comments.article_id
-INNER JOIN articles_categories
-    ON articles_categories.article_id = articles.id
-INNER JOIN categories
-    ON categories.id = articles_categories.category_id
-GROUP BY articles.id, users.id
 ORDER BY articles.created_at DESC;
 
 /* Данные публикации (идентификатор публикации, заголовок публикации, анонс, полный текст публикации, дата публикации,
@@ -51,19 +58,26 @@ SELECT
     articles.*,
     concat(users.first_name, ' ', users.last_name) as "first_name_last_name",
     users.email,
-    count(comments.id) as "comments_count",
-    string_agg(categories.name, ', ') as "categories"
+    article_comments.comments_count,
+    article_categories.categories
 FROM articles
+LEFT JOIN (
+    SELECT article_id, count(comments.id) as "comments_count"
+    FROM comments
+    GROUP BY article_id
+) article_comments
+ON articles.id = article_comments.article_id
+LEFT JOIN (
+    SELECT articles_categories.article_id, string_agg(categories.name, ', ') as "categories"
+    FROM categories
+    INNER JOIN articles_categories
+        ON articles_categories.category_id = categories.id
+    GROUP BY articles_categories.article_id
+) article_categories
+    ON articles.id = article_categories.article_id
 INNER JOIN users
     ON articles.user_id = users.id
-INNER JOIN comments
-    ON articles.id = comments.article_id
-INNER JOIN articles_categories
-    ON articles_categories.article_id = articles.id
-INNER JOIN categories
-    ON categories.id = articles_categories.category_id
 WHERE articles.id = 2
-GROUP BY articles.id, users.id;
 
 /* 5 свежих комментариев (идентификатор комментария, идентификатор публикации, имя и фамилия автора, текст комментария); */
 SELECT
@@ -74,7 +88,6 @@ SELECT
 FROM comments
 INNER JOIN users
     ON comments.user_id = users.id
-GROUP BY comments.id, users.id
 ORDER BY comments.created_at DESC
 LIMIT 5;
 
@@ -89,7 +102,6 @@ FROM comments
 INNER JOIN users
     ON comments.user_id = users.id
 WHERE comments.article_id = 1
-GROUP BY comments.id, users.id
 ORDER BY comments.created_at DESC;
 
 /* Обновляет заголовок публикации на «Как я встретил Новый год» */
