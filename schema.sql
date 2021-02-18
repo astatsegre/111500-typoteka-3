@@ -1,8 +1,8 @@
-drop table if exists users;
+drop table if exists articles_categories;
+drop table if exists categories;
 drop table if exists comments;
 drop table if exists articles;
-drop table if exists categories;
-drop table if exists articles_categories;
+drop table if exists users;
 
 create table users(
  id integer not null primary key generated always as identity,
@@ -16,11 +16,15 @@ create table users(
 
 create table articles(
  id integer not null primary key generated always as identity,
+ user_id integer not null,
  annotation varchar(255) not null,
  full_text varchar(1005),
  created_at timestamp default current_timestamp,
  img_url varchar(255),
- title varchar(255) not null
+ title varchar(255) not null,
+ foreign key(user_id) references users(id)
+    on delete cascade
+    on update cascade
 );
 
 
@@ -58,6 +62,7 @@ create table articles_categories(
 );
 
 create index on articles(title);
+create index on articles(user_id);
 create index on comments(user_id);
 create index on comments(article_id);
 create index on articles_categories(article_id);
