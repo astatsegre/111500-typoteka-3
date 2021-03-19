@@ -40,8 +40,8 @@ const generateMockedObject = async () => {
   return {
     id: nanoid(),
     title: titleList[getRandomNumber(0, titleList.length)],
-    createdDate: new Date(getRandomNumber(threeMonthsFromNowInMS, +new Date())),
-    announce: await randomSliceArray(`sentences.txt`, SENTENCES_IN_ANNOUNCE_MAX),
+    createdAt: new Date(getRandomNumber(threeMonthsFromNowInMS, +new Date())),
+    annotation: await randomSliceArray(`sentences.txt`, SENTENCES_IN_ANNOUNCE_MAX),
     fullText: await randomSliceArray(`sentences.txt`, textList.length),
     category: await randomSliceArray(`categories.txt`),
     comments: await getComments(getRandomNumber(0, 10))

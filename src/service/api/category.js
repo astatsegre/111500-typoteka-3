@@ -8,7 +8,7 @@ module.exports = (service) => {
   const categoriesRouter = new Router();
 
   categoriesRouter.get(`/`, async (req, res) => {
-    const categories = service.getAll();
+    const categories = await service.getAll();
     res.status(HTTP_CODE.OK).json(categories);
   });
 

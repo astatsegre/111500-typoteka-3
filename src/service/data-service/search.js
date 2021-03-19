@@ -1,15 +1,17 @@
 'use strict';
 
+const {Op} = require(`sequelize`);
+
 class SearchService {
-  constructor(articleList) {
-    this._articles = articleList;
+  constructor(sequelize) {
+    this._articles = sequelize.models.Article;
   }
 
   find(query) {
     if (!query) {
       return [];
     }
-    return this._articles.filter((article) => article.title.toLowerCase().includes(query.toLowerCase()));
+    return this._articles.findAll({where: {title: {[Op.substring]: query.toLowerCase()}}});
   }
 
 }

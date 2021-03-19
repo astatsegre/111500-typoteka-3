@@ -11,10 +11,12 @@ const CategoryService = require(`../data-service/category`);
 const CommentService = require(`../data-service/comment`);
 const SearchService = require(`../data-service/search`);
 const logger = require(`../lib/logger`).getLogger({name: `api`});
+const initModelsAndGetSequelize = require(`../models`);
+const sequelize = initModelsAndGetSequelize();
 
 const app = express();
 
-const getApp = (mockedData = [], mockedCategoryList = []) => {
+const getApp = () => {
   app.use(express.json());
   app.use((req, res, next) => {
     logger.debug(`Request ${req.url}`);
@@ -24,9 +26,9 @@ const getApp = (mockedData = [], mockedCategoryList = []) => {
     next();
   });
 
-  app.use(`/api/articles`, articleRouter(new ArticleService(mockedData), new CommentService()));
-  app.use(`/api/categories`, categoryRouter(new CategoryService(mockedCategoryList)));
-  app.use(`/api/search`, searchRouter(new SearchService(mockedData)));
+  app.use(`/api/articles`, articleRouter(new ArticleService(sequelize), new CommentService(sequelize)));
+  app.use(`/api/categories`, categoryRouter(new CategoryService(sequelize)));
+  app.use(`/api/search`, searchRouter(new SearchService(sequelize)));
 
   app.use((req, res) => {
     res.status(HTTP_CODE.NOT_FOUND).send(`Not found`);

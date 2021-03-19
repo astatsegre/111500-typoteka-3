@@ -92,7 +92,7 @@ block content
                 button.search__button.button.button--transparent(type='submit') Найти
               each article in results
                 .search__result
-                  time.search__date(datetime=`${article.createdDate}`) #{article.createdDate.slice(0, 10)}, #{article.createdDate.slice(11, 16)}
+                  time.search__date(datetime=`${article.createdAt}`) #{article.createdAt.slice(0, 10)}, #{article.createdAt.slice(11, 16)}
                   a.search__link #{article.title}
             if !results.length
               p.search-page__empty Ничего не нашлось
