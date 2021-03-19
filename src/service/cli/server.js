@@ -15,14 +15,14 @@ const runServer = async (userPort) => {
     if (err) {
       return logger.error(err);
     }
-    return logger.info(`Слушаю на порту ${port}`);
+    return logger.info(`Listen on port ${port}`);
   });
 
-  logger.info(`Устанавливаю соединение с БД`);
+  logger.info(`Trying to connect DB`);
   sequelize.authenticate().then(() => {
-    logger.info(`Соединение c БД установлено`);
+    logger.info(`Connection to the DB is established`);
   }).catch((error) => {
-    logger.error(`Ошибка установки соединения: ${error}`);
+    logger.error(`Error, while connecting DB: ${error}`);
   });
 };
 
