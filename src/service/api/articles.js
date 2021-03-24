@@ -14,12 +14,11 @@ module.exports = (articleService, commentService) => {
     const articles = await articleService.getAll();
     res.status(HTTP_CODE.OK).json(articles);
   });
-  articleRouter.get(`/:articleId`, articleExists(articleService), async (req, res) => {
-    res.status(HTTP_CODE.OK).json(await res.locals.article);
+  articleRouter.get(`/:articleId`, articleExists(articleService), (req, res) => {
+    res.status(HTTP_CODE.OK).json(res.locals.article);
   });
   articleRouter.post(`/`, articleValidator, async (req, res) => {
     const createdOffer = await articleService.create(req.body);
-    console.log(`createdOffer`, createdOffer);
     res.status(HTTP_CODE.CREATED).json(createdOffer);
   });
   articleRouter.put(`/:articleId`, [articleExists(articleService), articleValidator], async (req, res) => {

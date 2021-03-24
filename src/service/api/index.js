@@ -12,11 +12,12 @@ const CommentService = require(`../data-service/comment`);
 const SearchService = require(`../data-service/search`);
 const logger = require(`../lib/logger`).getLogger({name: `api`});
 const initModelsAndGetSequelize = require(`../models`);
-const sequelize = initModelsAndGetSequelize();
 
-const app = express();
 
 const getApp = () => {
+  const app = express();
+  const sequelize = initModelsAndGetSequelize();
+
   app.use(express.json());
   app.use((req, res, next) => {
     logger.debug(`Request ${req.url}`);
