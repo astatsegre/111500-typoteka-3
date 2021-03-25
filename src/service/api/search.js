@@ -12,7 +12,7 @@ module.exports = (searchService) => {
     if (!query) {
       return res.status(HTTP_CODE.BAD_REQUEST).send(`provide "query" query-param`);
     }
-    const result = searchService.find(query);
+    const result = await searchService.find(query);
     return res.status(HTTP_CODE.OK).json(result);
   });
 

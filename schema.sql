@@ -6,23 +6,26 @@ drop table if exists users;
 
 create table users(
  id integer not null primary key generated always as identity,
- avatar_url varchar(255),
- first_name varchar(255),
- last_name varchar(255),
- email varchar(255),
- password_hash varchar(255)
+ "createdAt" timestamp default current_timestamp,
+ "updatedAt" timestamp default current_timestamp,
+ "avatarUrl" varchar(255) not null,
+ "firstName" varchar(255) not null,
+ "lastName" varchar(255) not null,
+ email varchar(255) not null,
+ "passwordHash" varchar(255) not null
 );
 
 
 create table articles(
  id integer not null primary key generated always as identity,
- user_id integer not null,
+ "userId" integer not null,
  annotation varchar(255) not null,
- full_text varchar(1005),
- created_at timestamp default current_timestamp,
- img_url varchar(255),
+ "fullText" varchar(1005),
+ "createdAt" timestamp default current_timestamp,
+ "updatedAt" timestamp default current_timestamp,
+ "imgUrl" varchar(255),
  title varchar(255) not null,
- foreign key(user_id) references users(id)
+ foreign key("userId") references users(id)
     on delete cascade
     on update cascade
 );
@@ -31,14 +34,14 @@ create table articles(
 
 create table comments(
   id integer not null primary key generated always as identity,
-  user_id integer not null,
-  article_id integer not null,
+  "userId" integer not null,
+  "articleId" integer not null,
   text varchar(1000) not null,
-  created_at timestamp default current_timestamp,
-  foreign key(user_id) references users(id)
+  "createdAt" timestamp default current_timestamp,
+  foreign key("userId") references users(id)
     on delete cascade
     on update cascade,
-  foreign key(article_id) references articles(id)
+  foreign key("articleId") references articles(id)
     on delete cascade
     on update cascade
 );
@@ -46,26 +49,28 @@ create table comments(
 
 create table categories(
  id integer not null primary key generated always as identity,
- name varchar(35)
+ name varchar(35) not null
 );
 
 create table articles_categories(
-  article_id integer not null,
-  category_id integer not null,
-  constraint articles_categories_id primary key (article_id, category_id),
-  foreign key(article_id) references articles(id)
+  "articleId" integer not null,
+  "categoryId" integer not null,
+  "createdAt" timestamp default current_timestamp,
+  "updatedAt" timestamp default current_timestamp,
+  constraint articles_categories_id primary key ("articleId", "categoryId"),
+  foreign key("articleId") references articles(id)
     on delete cascade
     on update cascade,
-  foreign key(category_id) references categories(id)
+  foreign key("categoryId") references categories(id)
     on delete cascade
     on update cascade
 );
 
 create index on articles(title);
-create index on articles(user_id);
-create index on comments(user_id);
-create index on comments(article_id);
-create index on articles_categories(article_id);
-create index on articles_categories(category_id);
+create index on articles("userId");
+create index on comments("userId");
+create index on comments("articleId");
+create index on articles_categories("articleId");
+create index on articles_categories("categoryId");
 create unique index on users(email);
 create unique index on categories(name);

@@ -32,11 +32,12 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
   const {body, file} = req;
   const articleData = {
     picture: file.filename,
-    createdDate: body.createdDate,
-    announce: body.announce,
+    createdAt: body.createdAt,
+    annotation: body.annotation,
     fullText: body.fullText,
     title: body.title,
-    category: body.category
+    categories: body.categories,
+    userId: 2 // TODO: change after auth implementation
   };
   try {
     await ArticleApi.addArticle(articleData);
