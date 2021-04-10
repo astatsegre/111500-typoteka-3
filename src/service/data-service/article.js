@@ -1,13 +1,20 @@
 'use strict';
 
+const {DEFAULT_ARTICLES_OFFSET, DEFAULT_ARTICLES_LIMIT} = require('../constants');
+
 class ArticleService {
   constructor(sequelize) {
     this._sequelize = sequelize;
     this._articles = sequelize.models.Article;
     this._categories = sequelize.models.Category;
   }
-  getAll() {
-    return this._articles.findAll();
+  getAll(limit = DEFAULT_ARTICLES_LIMIT, offset = DEFAULT_ARTICLES_OFFSET) {
+    return this._articles.findAndCountAll({
+      include: ['categories', 'comments'],
+      limit,
+      offset,
+      distinct: true
+    });
   }
   getOne(id) {
     return this._articles.findByPk(id, {
