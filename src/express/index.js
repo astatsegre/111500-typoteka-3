@@ -8,7 +8,7 @@ const myRouter = require(`./routes/my`);
 const articlesRouter = require(`./routes/articles`);
 const ArticleApi = require(`./services/article-api`);
 const MainApi = require(`./services/main-api`);
-const {DEFAULT_ARTICLES_LIMIT, DEFAULT_PAGE} = require('./constants')
+const {DEFAULT_ARTICLES_LIMIT, DEFAULT_PAGE} = require(`./constants`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
@@ -25,7 +25,7 @@ app.set(`view engine`, `pug`);
 app.get(`/`, async (req, res) => {
   let options = {};
   let {page} = req.query;
-  if (page < 1 || page == null) {
+  if (!page || page < 1) {
     page = DEFAULT_PAGE;
   }
   page = +page;
@@ -41,7 +41,7 @@ app.get(`/`, async (req, res) => {
     }
     const pagesAfterCurrentAmount = pagesTotalAmount - page;
     const pagerLength = pagesAfterCurrentAmount > 4 ? 4 : pagesAfterCurrentAmount;
-    let pagesNumber = [page]
+    let pagesNumber = [page];
     for (let i = 1; i <= pagerLength; i++) {
       pagesNumber.push(page + i);
     }

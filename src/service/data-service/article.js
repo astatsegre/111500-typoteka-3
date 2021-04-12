@@ -1,6 +1,6 @@
 'use strict';
 
-const {DEFAULT_ARTICLES_OFFSET, DEFAULT_ARTICLES_LIMIT} = require('../constants');
+const {DEFAULT_ARTICLES_OFFSET, DEFAULT_ARTICLES_LIMIT} = require(`../constants`);
 
 class ArticleService {
   constructor(sequelize) {
@@ -10,7 +10,7 @@ class ArticleService {
   }
   getAll(limit = DEFAULT_ARTICLES_LIMIT, offset = DEFAULT_ARTICLES_OFFSET) {
     return this._articles.findAndCountAll({
-      include: ['categories', 'comments'],
+      include: [`categories`, `comments`],
       limit,
       offset,
       distinct: true

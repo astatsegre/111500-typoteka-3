@@ -10,7 +10,10 @@ const _axios = axios.create({
 
 class ArticleApi {
   getArticles(page = DEFAULT_PAGE) {
-    return _axios.get(`/articles?limit=${DEFAULT_ARTICLES_LIMIT}&offset=${(page - 1) * DEFAULT_ARTICLES_LIMIT}`);
+    return _axios.get(`/articles`, {params: {
+      limit: DEFAULT_ARTICLES_LIMIT,
+      offset: (page - 1) * DEFAULT_ARTICLES_LIMIT
+    }});
   }
   getOneArticle(id) {
     return _axios.get(`/articles/${id}`);
