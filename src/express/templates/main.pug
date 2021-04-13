@@ -94,9 +94,9 @@ block content
             each article in articles
               li.preview__item
                 ul.preview__breadcrumbs
-                  each category in article.category
+                  each category in article.categories
                     li.preview__breadcrumbs-item
-                      a.preview__breadcrumbs-link(href='#') #{category}
+                      a.preview__breadcrumbs-link(href='#') #{category.name}
                 .preview__background
                   img.preview__background-image(src='img/', width='460', height='240', srcset='img/skyscraper@1x.jpg 1x, img/skyscraper@2x.jpg 2x', alt='Фотография небоскреба')
                 time.preview__time(datetime=`${article.createdAt}`) #{article.createdAt.slice(0, 10)}, #{article.createdAt.slice(11, 16)}
@@ -107,6 +107,28 @@ block content
                   | Комментарии
                   span.preview__cloud
                   b.preview__comment-count #{article.comments.length}
+
+          .preview__toggle-wrapper
+            ul.preview__pagination.pagination
+              li
+                a.pagination__button.button.button--backwards(
+                  class={'button--disabled': pager.isLeftBtnDisabled}
+                  href='./?page=' + (pager.currentPage - 1)
+                  aria-label='Страница назад') Назад
+              each number in pager.numbers
+                if number === pager.currentPage
+                  li.pagination__item.pagination__item--active
+                    a #{number}
+                else
+                  li.pagination__item
+                    a(href='./?page=' + number) #{number}
+              li
+                a.pagination__button.button.button--forward(
+                  class={'button--disabled': pager.isRightBtnDisabled}
+                  href='./?page=' + (pager.currentPage + 1)
+                  aria-label='Страница вперед'
+                  ) Вперед
+
 
       include common/footer
     //

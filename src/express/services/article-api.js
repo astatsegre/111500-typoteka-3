@@ -1,7 +1,7 @@
 'use strict';
 
 const axios = require(`axios`);
-const {API_TIMEOUT, API_BASE_URL} = require(`../constants`);
+const {API_TIMEOUT, API_BASE_URL, DEFAULT_ARTICLES_LIMIT, DEFAULT_PAGE} = require(`../constants`);
 
 const _axios = axios.create({
   baseURL: API_BASE_URL,
@@ -9,8 +9,11 @@ const _axios = axios.create({
 });
 
 class ArticleApi {
-  getArticles() {
-    return _axios.get(`/articles`);
+  getArticles(page = DEFAULT_PAGE) {
+    return _axios.get(`/articles`, {params: {
+      limit: DEFAULT_ARTICLES_LIMIT,
+      offset: (page - 1) * DEFAULT_ARTICLES_LIMIT
+    }});
   }
   getOneArticle(id) {
     return _axios.get(`/articles/${id}`);

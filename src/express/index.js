@@ -8,6 +8,7 @@ const myRouter = require(`./routes/my`);
 const articlesRouter = require(`./routes/articles`);
 const ArticleApi = require(`./services/article-api`);
 const MainApi = require(`./services/main-api`);
+const {DEFAULT_ARTICLES_LIMIT, DEFAULT_PAGE} = require(`./constants`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
@@ -23,12 +24,35 @@ app.set(`view engine`, `pug`);
 
 app.get(`/`, async (req, res) => {
   let options = {};
+  let {page} = req.query;
+  if (!page || page < 1) {
+    page = DEFAULT_PAGE;
+  }
+  page = +page;
   try {
-    const {data} = await ArticleApi.getArticles();
-    let hotArticles = [...data].sort((a, b) => {
+    const {data} = await ArticleApi.getArticles(page);
+    let hotArticles = [...data.rows].sort((a, b) => {
       return b.comments.length - a.comments.length;
     }).slice(0, 4);
-    options.articles = data;
+
+    const pagesTotalAmount = Math.ceil(data.count / DEFAULT_ARTICLES_LIMIT);
+    if (page > pagesTotalAmount) {
+      page = pagesTotalAmount;
+    }
+    const pagesAfterCurrentAmount = pagesTotalAmount - page;
+    const pagerLength = pagesAfterCurrentAmount > 4 ? 4 : pagesAfterCurrentAmount;
+    let pagesNumber = [page];
+    for (let i = 1; i <= pagerLength; i++) {
+      pagesNumber.push(page + i);
+    }
+    const pager = {
+      currentPage: page,
+      isLeftBtnDisabled: page === 1,
+      isRightBtnDisabled: page >= pagesTotalAmount,
+      numbers: pagesNumber,
+    };
+    options.articles = data.rows;
+    options.pager = pager;
     options.hotArticles = hotArticles;
   } catch (e) {
     options.articles = [];

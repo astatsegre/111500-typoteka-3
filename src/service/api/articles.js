@@ -11,8 +11,8 @@ module.exports = (articleService, commentService) => {
   const articleRouter = new Router();
 
   articleRouter.get(`/`, async (req, res) => {
-    const articles = await articleService.getAll();
-    res.status(HTTP_CODE.OK).json(articles);
+    const {limit, offset} = req.query;
+    res.status(HTTP_CODE.OK).json(await articleService.getAll(limit, offset));
   });
   articleRouter.get(`/:articleId`, articleExists(articleService), (req, res) => {
     res.status(HTTP_CODE.OK).json(res.locals.article);
